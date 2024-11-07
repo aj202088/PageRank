@@ -1,15 +1,22 @@
 #pragma once
-
 #include <string>
-
+#include <map>
 using namespace std;
 
 class AdjacencyList {
     private:
-    //Think about what member variables you need to initialize
+    // Adjacency list to store links between pages
+    map<string, vector<string>> graph;
+    // PageRank values for each page
+    map<string, double> pageRanks;
+    // Store out degree for each page
+    map<string, double> outDeg;
+
     public:
-    //Think about what helper functions you will need in the algorithm
+    // Adds directed edge from 'from' to 'to' and updates outDeg for rank distribution
+    void addEdge(const string& from, const string& to);
+    // Initialize PageRank values
+    void initializePR();
+    // Update ranks over n iterations, formats result alphabetically with rank number to two decimal places
     string PageRank(int n);
 };
-
-// This class and method are optional.

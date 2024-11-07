@@ -1,7 +1,5 @@
 #include <iostream>
-
 #include "AdjacencyList.h"
-
 using namespace std;
 
 int main() {
@@ -9,11 +7,17 @@ int main() {
     string from, to;
     cin >> no_of_lines;
     cin >> power_iterations;
+    // Create graph object
+    AdjacencyList Created_Graph;
+
     for (int i = 0; i < no_of_lines; i++) {
         cin >> from;
         cin >> to;
-        // Do Something
+        // Add new directed edge from 'from' to 'to'
+        Created_Graph.addEdge(from, to);
     }
-    //Create a graph object
-    // Created_Graph.PageRank(power_iterations);}
+
+    // Compute PageRank and print out alphabetically
+    Created_Graph.PageRank(power_iterations);
+    return 0;
 }
