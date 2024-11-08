@@ -82,10 +82,15 @@ string AdjacencyList::PageRank(int n){
     sort(sortedPages.begin(), sortedPages.end());
 
     // Print out each sorted entry as "page #.##/n"
-    for (const auto& entry : sortedPages) {
+    for (size_t i = 0; i < sortedPages.size(); i++) {
+        const auto& entry = sortedPages[i];
         cout << entry.first << " " << fixed << setprecision(2) << entry.second << "\n";
         // Format each entry as "page #.##" and append to result
-        result += entry.first + " " + to_string(entry.second).substr(0, to_string(entry.second).find('.') + 3) + "\n";
+        result += entry.first + " " + to_string(entry.second).substr(0, to_string(entry.second).find('.') + 3);
+        // Add a newline only if it's not the last entry
+        if (i != sortedPages.size() - 1) {
+            result += "\n";
+        }
     }
     return result;
 }
