@@ -36,7 +36,7 @@ string AdjacencyList::PageRank(int n){
     map<string, double> newRanks;
 
     // Iterate through graph to update PageRank values based on current graph structure and ranks them from previous iteration
-    for (int i = 0; i < n; i++) {
+    for (int i = 1; i < n; i++) {
         // Iterate through each entry where entry first is the page and entry second is the vector of outgoing links
         for (const auto& entry : graph) {
             // Initialize each page rank to 0.0 for that iteration to start
@@ -45,33 +45,25 @@ string AdjacencyList::PageRank(int n){
         // Iterate through each entry where entry first is the page and entry second is the vector of outgoing links
         for (const auto& entry : graph) {
             const string& page = entry.first;
-            double rankShare;
+            double newRank = 0.0;
 
-            // Calculate the RankShare each outgoing link receives from page
-            if (outDeg[page] > 0) {
-                // Calculate rankShare by dividing # of outgoing links
-                rankShare = pageRanks[page] / outDeg[page];
-            }
-            else {
-                // For pages with no outgoing links, distribute rank equally among pages
-                rankShare = pageRanks[page] / graph.size();
-            }
+            // Find all pages that link to the current page
+            for (const auto& linkPage : graph) {
+                const string& linkPageName = linkPage.first;
+                const vector<string>& outgoingLinks = linkPage.second;
 
-            // Rank distribution for graph
-            if (graph[page].empty()) {
-                // Distribute rank to all pages if no outgoing links
-                for (auto& rankEntry : newRanks) {
-                    rankEntry.second += rankShare / graph.size();
+                // Check if linkPage links to pageName
+                if (find(outgoingLinks.begin(), outgoingLinks.end(), page) != outgoingLinks.end()) {
+                    // Add the rank contribution from linkPage to pageName
+                    newRank += pageRanks[linkPageName] / outgoingLinks.size();
                 }
             }
-            else {
-                // Distribute rank to linked pages
-                for (auto& linkedPage : graph[page]) {
-                    newRanks[linkedPage] += rankShare;
-                }
-            }
+
+            // Store the new rank for pageName
+            newRanks[page] = newRank;
         }
-        // Update pageRanks to current rank values
+
+        // Update pageRanks with the new ranks for the next iteration
         pageRanks = newRanks;
     }
 
